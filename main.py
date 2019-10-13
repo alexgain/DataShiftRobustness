@@ -84,7 +84,7 @@ plt.xlabel('Mean')
 plt.ylabel('Sample-Average Test Loss')
 ax.set_facecolor('lavender')
 ax.grid(color='w', linestyle='-', linewidth=2)
-plt.savefig('loss_vs_var.png',dpi=100)
+plt.savefig('plots/loss_vs_var.png',dpi=100)
 plt.show()
 
 #plotting results:
@@ -98,7 +98,7 @@ plt.show()
 # plt.ylabel('Test Accuracy (%)')
 # ax.set_facecolor('lavender')
 # ax.grid(color='w', linestyle='-', linewidth=2)
-# plt.savefig('acc_vs_var.png',dpi=100)
+# plt.savefig('plots/acc_vs_var.png',dpi=100)
 # plt.show()
 
 
