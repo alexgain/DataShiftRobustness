@@ -9,6 +9,7 @@ def train_eval_(net, cuda, train_loader, verbose = 1, flatten = True):
     correct = 0
     total = 0
     loss_sum = 0
+    bs_i = 0
     for images, labels in train_loader:
         if cuda:
             images, labels = images.cuda(), labels.cuda()
@@ -19,16 +20,18 @@ def train_eval_(net, cuda, train_loader, verbose = 1, flatten = True):
         total += labels.size(0)
         correct += (predicted.float() == labels.float()).sum()
         loss_sum += loss_metric(outputs,labels)
+        bs_i += 1
         
     if verbose:
         print('Train accuracy: %.4f %%' % (100 * np.float(correct) / np.float(total)))
 
-    return (100.0 * correct / total).cpu().data.numpy().item(), loss_sum.cpu().data.numpy().item() / total
+    return (100.0 * correct / total).cpu().data.numpy().item(), loss_sum.cpu().data.numpy().item() / bs_i
 
 def test_eval_(net, cuda, test_loader, verbose = 1, flatten = True):
     correct = 0
     total = 0
     loss_sum = 0
+    bs_i = 0
     for images, labels in test_loader:
         if cuda:
             images, labels = images.cuda(), labels.cuda()
@@ -39,11 +42,12 @@ def test_eval_(net, cuda, test_loader, verbose = 1, flatten = True):
         total += labels.size(0)
         correct += (predicted.float() == labels.float()).sum()
         loss_sum += loss_metric(outputs,labels)
+        bs_i += 1
         
     if verbose:
         print('Test accuracy: %.4f %%' % (100 * np.float(correct) / np.float(total)))
 
-    return (100.0 * correct / total).cpu().data.numpy().item(), loss_sum.cpu().data.numpy().item() / total
+    return (100.0 * correct / total).cpu().data.numpy().item(), loss_sum.cpu().data.numpy().item() / bs_i
 
 
 
@@ -53,6 +57,7 @@ def train(net, epochs, cuda, optimizer, train_loader, test_loader, flatten=True)
         correct = 0
         total = 0
         loss_sum = 0
+        bs_i = 0
         for images, labels in train_loader:
             if cuda:
                 images, labels = images.cuda(), labels.cuda()
@@ -63,16 +68,18 @@ def train(net, epochs, cuda, optimizer, train_loader, test_loader, flatten=True)
             total += labels.size(0)
             correct += (predicted.float() == labels.float()).sum()
             loss_sum += loss_metric(outputs,labels)
+            bs_i += 1
             
         if verbose:
             print('Train accuracy: %.4f %%' % (100 * correct / total))
     
-        return 100.0 * correct / total, loss_sum.cpu().data.numpy().item() / total
+        return 100.0 * correct / total, loss_sum.cpu().data.numpy().item() / bs_i
     
     def test_eval(verbose = 1):
         correct = 0
         total = 0
         loss_sum = 0
+        bs_i = 0
         for images, labels in test_loader:
             if cuda:
                 images, labels = images.cuda(), labels.cuda()
@@ -83,11 +90,12 @@ def train(net, epochs, cuda, optimizer, train_loader, test_loader, flatten=True)
             total += labels.size(0)
             correct += (predicted.float() == labels.float()).sum()
             loss_sum += loss_metric(outputs,labels)
+            bs_i += 1
             
         if verbose:
             print('Test accuracy: %.4f %%' % (100 * correct / total))
     
-        return 100.0 * correct / total, loss_sum.cpu().data.numpy().item() / total
+        return 100.0 * correct / total, loss_sum.cpu().data.numpy().item() / bs_i
 
     t1 = time.time()
 

@@ -17,7 +17,7 @@ def get_data_loaders(var = 0, mean = 0.05, BS = 128, N_sub = 0):
     #     train_set.train_data = train_set.train_data + noise_level*torch.abs(torch.randn(*train_set.train_data.shape))
     #     train_set.train_data = train_set.train_data / train_set.train_data.max()
     
-    train_loader = torch.utils.data.DataLoader(train_set, batch_size = BS, shuffle=True)
+    train_loader = torch.utils.data.DataLoader(train_set, batch_size = BS, shuffle=False)
 
     #test set:
     test_set = datasets.MNIST('./data', train=False, download=True, transform=transform_data)
@@ -26,8 +26,12 @@ def get_data_loaders(var = 0, mean = 0.05, BS = 128, N_sub = 0):
     if var > 0:
         test_set.test_data = test_set.test_data.float()
         test_set.test_data = test_set.test_data + torch.distributions.Normal(mean,var).sample(test_set.test_data.shape)
-        test_set.test_data = test_set.test_data - test_set.test_data.min()
-        test_set.test_data = test_set.test_data / test_set.test_data.max()
+        test_set.test_data -= test_set.test_data.min()
+        test_set.test_data /= test_set.test_data.max()
+        test_set.test_data *= 255
+        print(test_set.test_data.min(),test_set.test_data.max())
+        # test_set.test_data = test_set.test_data - test_set.test_data.min()
+        # test_set.test_data = test_set.test_data / test_set.test_data.max()
         # test_set.test_data = test_set.test_data / test_set.test_data.max()
     
     test_loader = torch.utils.data.DataLoader(test_set, batch_size=BS, shuffle=False)

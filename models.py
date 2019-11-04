@@ -23,14 +23,20 @@ class MLP(nn.Module):
         
     def forward(self, x, bn = False):
 
-        if not bn:        
-            x = self.relu(self.ff1(x))
-            x = self.relu(self.ff2(x))
-            x = self.relu(self.ff3(x))        
-        elif bn:
-            x = self.relu(self.bn1(self.ff1(x)))
-            x = self.relu(self.bn2(self.ff2(x)))
-            x = self.relu(self.bn3(self.ff3(x)))            
+        # x = self.ff3(self.ff2(self.ff1(x)))
+        
+        # if not bn:        
+        #     x = self.relu(self.ff1(x))
+        #     x = self.relu(self.ff2(x))
+        #     x = self.relu(self.ff3(x))        
+        # elif bn:
+        #     x = self.relu(self.bn1(self.ff1(x)))
+        #     x = self.relu(self.bn2(self.ff2(x)))
+        #     x = self.relu(self.bn3(self.ff3(x)))            
+
+        x = self.relu(self.bn1(self.ff1(x)))
+        x = self.relu(self.bn2(self.ff2(x)))
+        x = self.relu(self.bn3(self.ff3(x)))            
 
         x = self.ff_out(x)            
             
