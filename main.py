@@ -41,7 +41,7 @@ net = MLP(input_size = 784, width = opt.netWidth)
 if opt.cuda:
     net = net.cuda()
 if opt.model_path != '':
-    net.load_state_dict(torch.load(opt.model_path))
+    net.load_state_dict(torch.load(opt.model_path),strict=False)
     
 #instantiate optimizer:
 optimizer = get_optimizer(net = net, lr = opt.lr, opt_str = opt.optim)

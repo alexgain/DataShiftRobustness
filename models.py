@@ -1,11 +1,9 @@
 import torch.nn as nn
-
+import torch
 
 class MLP(nn.Module):
     def __init__(self, input_size=784, width=500, num_classes=10):
         super(MLP, self).__init__()
-
-
         self.ff1 = nn.Linear(input_size, width)
         self.ff2 = nn.Linear(width, width) 
         self.ff3 = nn.Linear(width, width)
@@ -21,19 +19,14 @@ class MLP(nn.Module):
         self.bn2 = nn.BatchNorm1d(width)
         self.bn3 = nn.BatchNorm1d(width)
         
-    def forward(self, x, bn = False):
-
-        # x = self.ff3(self.ff2(self.ff1(x)))
+        ##noise parameters (just to include as part of computational graph):
+        self.mean = nn.Parameter(torch.zeros(1),requires_grad=True)
+        self.var = nn.Parameter(torch.zeros(1),requires_grad=True)
         
-        # if not bn:        
-        #     x = self.relu(self.ff1(x))
-        #     x = self.relu(self.ff2(x))
-        #     x = self.relu(self.ff3(x))        
-        # elif bn:
-        #     x = self.relu(self.bn1(self.ff1(x)))
-        #     x = self.relu(self.bn2(self.ff2(x)))
-        #     x = self.relu(self.bn3(self.ff3(x)))            
+    def forward(self, x):
 
+        # noise = x.clone().normal_(self.mean, torch.sqrt(self.var))
+        # x = x + noise
         x = self.relu(self.bn1(self.ff1(x)))
         x = self.relu(self.bn2(self.ff2(x)))
         x = self.relu(self.bn3(self.ff3(x)))            
