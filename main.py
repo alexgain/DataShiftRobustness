@@ -32,6 +32,7 @@ parser.add_argument('--prediction', type=str, default='vanilla', help='string fo
                     alaa: loss estimation via Alaa et. al 2019 (not implemented);\
                     ')
 parser.add_argument('--Ns', type=int, default=160, help='number of shifted samples used for loss estimation (for grad methods).')
+parser.add_argument('--max_var', type=float, default=10.0, help='maximum variance shift')
 parser.add_argument('--model_path', type=str, default='', help='path to saved model if loading.')
 
 opt = parser.parse_args()
@@ -56,7 +57,7 @@ if opt.model_path == '':
 
 #gaussian noise moments:
 
-max_var = 2.5
+max_var = opt.max_var
 N_var = 10.0
 var = np.arange(0, max_var + max_var/N_var, max_var/N_var)
 mean = 100
